@@ -102,65 +102,15 @@ void loop()
   display.setTextAlignment(TEXT_ALIGN_LEFT);
   display.setFont(ArialMT_Plain_10);
   
-  display.drawString(0, 0, "Sending packet: ");
-  display.drawString(90, 0, String(txNumber));
-  display.drawString(0, 20, rxpacket);
+//  display.drawString(0, 0, "Sending packet: ");
+//  display.drawString(90, 0, String(txNumber));
+//  display.drawString(0, 20, rxpacket);
+//  display.display();
+
+  display.drawString(0, 0, rxpacket);
+  display.drawString(0, 20, "Rssi = ");
+  display.drawString(40, 20, String(Rssi));
   display.display();
-
-   
-
-/*
-  if (Serial.available()) {
-    chr = Serial.read();
-    Serial.print(chr); // so the user can see what they're doing :P
-    if (chr == '\n' || chr == '\r') {
-      msg += chr; //msg+='\0'; // should maybe terminate my strings properly....
-      if (msg.startsWith("/")) {
-        // clean up msg string...
-        msg.trim(); msg.remove(0, 1);
-        // process command...
-        char cmd[1]; msg.substring(0, 1).toCharArray(cmd, 2);
-        switch (cmd[0]){
-          case '?':
-            Serial.println("Supported Commands:");
-            Serial.println("h - this message...");
-            Serial.println("n - change Tx nickname...");
-            Serial.println("d - print Tx nickname...");
-            break;
-          case 'n':
-            displayName = msg.substring(2);
-            Serial.print("Display name set to: "); Serial.println(displayName);
-            break;
-          case 'd':
-            Serial.print("Your display name is: "); Serial.println(displayName);
-            break;
-          default:
-            Serial.println("command not known... use 'h' for help...");
-        }
-        msg = "";
-      }
-      else {
-        // ssshhhhhhh ;)
-        Serial.print("Me: "); Serial.println(msg);
-        // assemble message
-        sendMsg += displayName;
-        sendMsg += "> ";
-        sendMsg += msg;
-
-        txpacket = sendMsg.c_str();
-
-        msg = "";
-        sendMsg = "";
-        Serial.print(": ");
-      }
-    }
-    else {
-      msg += chr;
-    }
-  }
-*/
-
-
   
   switch(state)
   {
@@ -171,7 +121,7 @@ void loop()
         mydata = Serial.readStringUntil('\n');
         // TODO: Process the data
       }
-      sprintf(txpacket,"%s, Rssi : %d",mydata,Rssi);
+      sprintf(txpacket,"%s",mydata);
       Serial.printf("\r\nsending packet \"%s\" , length %d\r\n",txpacket, strlen(txpacket));
       Radio.Send( (uint8_t *)txpacket, strlen(txpacket) );
       state=LOWPOWER;
